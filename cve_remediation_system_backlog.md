@@ -107,7 +107,7 @@ graph TD
 
 ### Phase 3: Core Logic & API
 
-#### Task 3.1: Prioritization Engine 🛑
+#### Task 3.1: Prioritization Engine 🛑 [DONE]
 - **Description**: Implement the ranking logic.
     - Formula: `Risk = Asset_Criticality * CVSS_Score`.
     - Booster: If found in CISA KEV, multiply score by **2.0**.

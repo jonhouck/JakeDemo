@@ -23,3 +23,13 @@ export interface ThreatInfo {
     remediation_steps: string;
     reference_urls: string[];
 }
+
+export interface RemediationItem {
+    asset_id: string;
+    hostname: string;
+    ip_address: string;
+    cve_id: string;
+    risk_score: number;
+    priority_rank: number;
+    threat_info: ThreatInfo;
+}

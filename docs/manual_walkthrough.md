@@ -62,3 +62,11 @@ This document outlines the steps to manually verify the initialization of the Ja
 1.  Review the server/browser console logs during startup.
 2.  **Check**: Look for "Fetching CISA KEV data..." and "Processed X exploited vulnerabilities from CISA."
 3.  **Check**: Verify that the application doesn't crash even if network is offline (simulated by turning off wifi or blocking request).
+
+### 7. Verify Prioritization Engine (Task 3.1)
+1.  Run the unit tests:
+    ```bash
+    npm test src/services/__tests__/PrioritizationEngine.test.ts
+    ```
+2.  **Check**: Verify all 3 tests pass (Risk Calculation, Booster Logic, Sorting).
+3.  **Note**: Visual verification in the UI will be available in Task 4.1.
