@@ -52,15 +52,16 @@ export class MockDataGenerator {
     }
 
     private static getWeightedCriticality(): number {
-        // Favor 3-7 range, fewer 1-2 and 8-10
+        // Updated for demo: More critical assets to show "problems"
         const rand = Math.random();
-        if (rand < 0.1) return Math.floor(Math.random() * 2) + 1; // 1-2
-        if (rand > 0.9) return Math.floor(Math.random() * 3) + 8; // 8-10
-        return Math.floor(Math.random() * 5) + 3; // 3-7
+        if (rand < 0.1) return Math.floor(Math.random() * 2) + 1; // 1-2 (10%)
+        if (rand > 0.7) return Math.floor(Math.random() * 3) + 8; // 8-10 (30%) - Increased from 10%
+        return Math.floor(Math.random() * 5) + 3; // 3-7 (60%)
     }
 
     private static getRandomCVEs(): string[] {
-        const count = Math.floor(Math.random() * 6); // 0 to 5 CVEs
+        // Increased density: 1 to 6 CVEs per asset
+        const count = Math.floor(Math.random() * 6) + 1;
         const cves: string[] = [];
         for (let i = 0; i < count; i++) {
             const cve = CURATED_CVES[Math.floor(Math.random() * CURATED_CVES.length)];
