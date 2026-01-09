@@ -57,3 +57,8 @@ This document outlines the steps to manually verify the initialization of the Ja
     npm start
     ```
 5.  **Check**: App loads at localhost:3000.
+
+### 6. Verify OSINT Data Integration (Task 2.1)
+1.  Review the server/browser console logs during startup.
+2.  **Check**: Look for "Fetching CISA KEV data..." and "Processed X exploited vulnerabilities from CISA."
+3.  **Check**: Verify that the application doesn't crash even if network is offline (simulated by turning off wifi or blocking request).

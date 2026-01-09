@@ -30,8 +30,30 @@ export class MockDataStore {
         this.scans.push(scan);
     }
 
-    public updateThreatCache(threat: ThreatInfo): void {
-        this.threat_cache.set(threat.cve_id, threat);
+    public updateThreatCache(threat: Partial<ThreatInfo> & { cve_id: string }): void {
+        const existing = this.threat_cache.get(threat.cve_id);
+        if (existing) {
+            this.threat_cache.set(threat.cve_id, { ...existing, ...threat });
+        } else {
+            // We need to ensure all required fields are present if it's a new entry, 
+            // or allow partials if we change the map type. 
+            // For now, let's assume if it's new, the caller provides a complete ThreatInfo 
+            // OR we provide default values for missing fields to satisfy the interface.
+            // However, the interface requires all fields. 
+            // Let's coerce it for now or assume the "partial" usage will only happen 
+            // if we have a way to handle missing fields.
+            // Actually, strict TS might complain if we store a Partial in a Map<string, ThreatInfo>.
+            // Let's construct a full object with defaults.
+            const newThreat: ThreatInfo = {
+                cve_id: threat.cve_id,
+                cvss_score: threat.cvss_score ?? 0,
+                is_exploited_in_wild: threat.is_exploited_in_wild ?? false,
+                description: threat.description ?? 'No description available.',
+                remediation_steps: threat.remediation_steps ?? 'No specific remediation available.',
+                reference_urls: threat.reference_urls ?? []
+            };
+            this.threat_cache.set(threat.cve_id, newThreat);
+        }
     }
 
     public getAssets(): Asset[] {
