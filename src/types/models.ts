@@ -33,3 +33,11 @@ export interface RemediationItem {
     priority_rank: number;
     threat_info: ThreatInfo;
 }
+
+export interface DashboardStats {
+    total_assets: number;
+    total_scans: number;
+    total_vulnerabilities: number;
+    critical_assets: number;
+    exploited_cves: number;
+}

@@ -69,4 +69,9 @@ This document outlines the steps to manually verify the initialization of the Ja
     npm test src/services/__tests__/PrioritizationEngine.test.ts
     ```
 2.  **Check**: Verify all 3 tests pass (Risk Calculation, Booster Logic, Sorting).
-3.  **Note**: Visual verification in the UI will be available in Task 4.1.
+### 8. Verify Internal API Routes (Task 3.2)
+1.  Ensure the dev server is running (`npm run dev`).
+2.  Open [http://localhost:3000/api/dashboard](http://localhost:3000/api/dashboard).
+    - **Check**: Returns a JSON object with `total_assets`, `critical_assets`, etc.
+3.  Open [http://localhost:3000/api/remediation](http://localhost:3000/api/remediation).
+    - **Check**: Returns a JSON array of remediation items sorted by risk score.
