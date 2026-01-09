@@ -67,4 +67,31 @@ export class MockDataStore {
     public getThreat(cveId: string): ThreatInfo | undefined {
         return this.threat_cache.get(cveId);
     }
+
+    public getDashboardStats(): import('../types/models').DashboardStats {
+        const assets = this.getAssets();
+        const scans = this.getScans();
+
+        const uniqueVulnerabilities = new Set<string>();
+        scans.forEach(scan => {
+            scan.detected_cves.forEach(cve => uniqueVulnerabilities.add(cve));
+        });
+
+        // Count exploited CVEs in the unique set
+        let exploitedCount = 0;
+        uniqueVulnerabilities.forEach(cve => {
+            const threat = this.threat_cache.get(cve);
+            if (threat?.is_exploited_in_wild) {
+                exploitedCount++;
+            }
+        });
+
+        return {
+            total_assets: assets.length,
+            total_scans: scans.length,
+            total_vulnerabilities: uniqueVulnerabilities.size,
+            critical_assets: assets.filter(a => a.criticality_score >= 8).length,
+            exploited_cves: exploitedCount
+        };
+    }
 }

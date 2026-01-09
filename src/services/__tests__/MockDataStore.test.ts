@@ -63,4 +63,38 @@ describe('MockDataStore', () => {
         store.reset();
         expect(store.getAssets()).toHaveLength(0);
     });
+
+    it('should calculate dashboard stats correctly', () => {
+        // Add assets
+        store.addAsset({ id: 'a1', criticality_score: 9 } as Asset); // Critical
+        store.addAsset({ id: 'a2', criticality_score: 5 } as Asset); // Normal
+
+        // Add scans
+        // Scan 1: Exploit
+        store.addScanResult({
+            scan_id: 's1', asset_id: 'a1', timestamp: 'now', detected_cves: ['CVE-EXPLOITED']
+        } as ScanResult);
+
+        // Scan 2: Non-exploit
+        store.addScanResult({
+            scan_id: 's2', asset_id: 'a2', timestamp: 'now', detected_cves: ['CVE-SAFE']
+        } as ScanResult);
+
+        // Add threats to cache
+        store.updateThreatCache({
+            cve_id: 'CVE-EXPLOITED', is_exploited_in_wild: true
+        } as unknown as ThreatInfo); // Using unknown for partial mocking in test context
+
+        store.updateThreatCache({
+            cve_id: 'CVE-SAFE', is_exploited_in_wild: false
+        } as unknown as ThreatInfo);
+
+        const stats = store.getDashboardStats();
+
+        expect(stats.total_assets).toBe(2);
+        expect(stats.total_scans).toBe(2);
+        expect(stats.total_vulnerabilities).toBe(2); // Unique CVEs
+        expect(stats.critical_assets).toBe(1); // Score >= 8
+        expect(stats.exploited_cves).toBe(1);
+    });
 });

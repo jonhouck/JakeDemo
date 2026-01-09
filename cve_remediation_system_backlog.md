@@ -114,7 +114,7 @@ graph TD
 - **Outcome**: Logic that takes the Mock Store + OSINT Cache and returns sorted items.
 - **Dependencies**: Task 1.3, Task 2.1.
 
-#### Task 3.2: Internal API Routes
+#### Task 3.2: Internal API Routes 🛑 [DONE]
 - **Description**: Create Next.js API Routes to serve the frontend.
     - `GET /api/dashboard`: Returns summary stats.
     - `GET /api/remediation`: Returns the full prioritized list.
