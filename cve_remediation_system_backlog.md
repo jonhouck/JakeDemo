@@ -75,7 +75,7 @@ graph TD
 
 ### Phase 1: Foundation & Runtime Generation
 
-#### Task 1.1: Project Initialization 🛑
+#### Task 1.1: Project Initialization 🛑 [DONE]
 - **Description**: Initialize a **Next.js** project (using React).
     - Use App Router.
     - Setup TypeScript and Tailwind CSS.
