@@ -86,3 +86,12 @@ This document outlines the steps to manually verify the initialization of the Ja
 6.  **Check**: Verify visually that items with "⚠️ Exploited" are likely present (may require scrolling).
 7.  **Check**: Click "Details" on a row. Verify a modal opens with "Description", "CVSS Score", and "Remediation Steps".
 8.  **Check**: Close the modal.
+
+### 10. Verify Report Export (Task 4.2)
+1.  Locate the "Export JSON" and "MD" buttons in the top right of the dashboard.
+2.  Click **Export JSON**.
+    - **Expected Result:** A file named `cve-report-YYYY-MM-DD.json` is downloaded.
+    - **Verification:** Open the file from your downloads folder and verify it contains a JSON array of remediation items.
+3.  Click **MD** (Markdown).
+    - **Expected Result:** A file named `cve-report-YYYY-MM-DD.md` is downloaded.
+    - **Verification:** Open the file and verify formatted table with columns: Rank, Risk Score, Asset, CVE ID, Severity, Status.

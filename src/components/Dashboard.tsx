@@ -5,6 +5,7 @@ import { DashboardStats } from './DashboardStats';
 import { RemediationTable } from './RemediationTable';
 import { VulnerabilityDetail } from './VulnerabilityDetail';
 import { DashboardStats as DashboardStatsType, RemediationItem } from '@/types/models';
+import { ReportService } from '@/services/ReportService';
 
 export const Dashboard = () => {
     const [stats, setStats] = useState<DashboardStatsType | null>(null);
@@ -42,6 +43,25 @@ export const Dashboard = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const handleExport = (format: 'json' | 'markdown') => {
+        if (remediationItems.length === 0) {
+            alert('No data to export.');
+            return;
+        }
+
+        const dateStr = new Date().toISOString().split('T')[0];
+        const filename = `cve-report-${dateStr}.${format === 'json' ? 'json' : 'md'}`;
+
+        let blob: Blob;
+        if (format === 'json') {
+            blob = ReportService.generateJson(remediationItems);
+        } else {
+            blob = ReportService.generateMarkdown(remediationItems);
+        }
+
+        ReportService.downloadFile(blob, filename);
+    };
+
     return (
         <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-500">
             <div className="flex justify-between items-center">
@@ -55,12 +75,20 @@ export const Dashboard = () => {
                     >
                         Refresh Data
                     </button>
-                    <button
-                        className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 transition-colors shadow-sm"
-                        onClick={() => alert("Report generation coming in Task 4.2")}
-                    >
-                        Export Report
-                    </button>
+                    <div className="flex shadow-sm rounded-md" role="group">
+                        <button
+                            className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 border border-r border-blue-700 rounded-l-md hover:bg-blue-700 transition-colors"
+                            onClick={() => handleExport('json')}
+                        >
+                            Export JSON
+                        </button>
+                        <button
+                            className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 border-l rounded-r-md hover:bg-blue-700 transition-colors"
+                            onClick={() => handleExport('markdown')}
+                        >
+                            MD
+                        </button>
+                    </div>
                 </div>
             </div>
 
