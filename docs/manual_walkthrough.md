@@ -69,9 +69,20 @@ This document outlines the steps to manually verify the initialization of the Ja
     npm test src/services/__tests__/PrioritizationEngine.test.ts
     ```
 2.  **Check**: Verify all 3 tests pass (Risk Calculation, Booster Logic, Sorting).
+
 ### 8. Verify Internal API Routes (Task 3.2)
 1.  Ensure the dev server is running (`npm run dev`).
 2.  Open [http://localhost:3000/api/dashboard](http://localhost:3000/api/dashboard).
     - **Check**: Returns a JSON object with `total_assets`, `critical_assets`, etc.
 3.  Open [http://localhost:3000/api/remediation](http://localhost:3000/api/remediation).
     - **Check**: Returns a JSON array of remediation items sorted by risk score.
+
+### 9. Verify Dashboard UI (Task 4.1)
+1.  Ensure the dev server is running (`npm run dev`).
+2.  Navigate to [http://localhost:3000](http://localhost:3000).
+3.  **Check**: Dashboard Header "CVE Remediation PoC" is visible.
+4.  **Check**: Four summary cards (Total Assets, Critical Assets, High Risk Vulns, Exploited CVEs) display numbers significantly greater than 0.
+5.  **Check**: A table titled "Prioritized Remediation Actions" lists multiple items.
+6.  **Check**: Verify visually that items with "⚠️ Exploited" are likely present (may require scrolling).
+7.  **Check**: Click "Details" on a row. Verify a modal opens with "Description", "CVSS Score", and "Remediation Steps".
+8.  **Check**: Close the modal.
