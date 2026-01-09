@@ -1,11 +1,14 @@
 import { MockDataStore } from './MockDataStore';
 import { RemediationItem } from '../types/models';
+import { MockDataGenerator } from './MockDataGenerator';
 
 export class PrioritizationEngine {
     private store: MockDataStore;
 
     constructor() {
         this.store = MockDataStore.getInstance();
+        // Ensure data exists (fixes server-side initialization race conditions)
+        MockDataGenerator.initializeData();
     }
 
     /**
