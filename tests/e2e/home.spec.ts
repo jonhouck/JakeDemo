@@ -2,11 +2,25 @@ import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Create Next App/); // Title meta tag hasn't changed yet
+    // Check for the rendered h1, not just the meta title
+    await expect(page.getByRole('heading', { name: 'CVE Remediation PoC' })).toBeVisible();
 });
 
-test('shows mock data stats', async ({ page }) => {
+test('shows dashboard components', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('CVE Remediation PoC')).toBeVisible();
-    await expect(page.getByText('Mock Data Initialization Complete.')).toBeVisible();
+
+    // Check for main dashboard sections
+    await expect(page.getByText('Security Posture Overview')).toBeVisible();
+    await expect(page.getByText('Prioritized Remediation Actions')).toBeVisible();
+
+    // Check for stats
+    await expect(page.getByText('Total Assets')).toBeVisible();
+
+    // Wait for data to load (since it fetches on mount)
+    // The skeleton loader disappears and stats appear.
+    // We check for a non-zero value or just the labels for now.
+    await expect(page.getByText('High Risk Vulns')).toBeVisible();
+
+    // Check that we don't see the loading state anymore (implies successful load)
+    await expect(page.getByText('Loading remediation data...')).not.toBeVisible({ timeout: 10000 });
 });
