@@ -1,27 +1,24 @@
 import { MockDataGenerator } from "@/services/MockDataGenerator";
-import { MockDataStore } from "@/services/MockDataStore";
 import { OsintService } from "@/services/OsintService";
+import { Dashboard } from "@/components/Dashboard";
 
 export default function Home() {
-  // Initialize mock data (idempotent)
+  // Initialize mock data on the server side (idempotent)
   MockDataGenerator.initializeData();
 
-  // Trigger OSINT fetch (fire and forget, or await if we want to ensure data is there before rendering)
-  // For this PoC, we'll just trigger it.
+  // Trigger OSINT fetch in background
   const osintService = new OsintService();
-  // We accept the promise floating for now as it's a background fetch in this PoC context
-  osintService.fetchCisaKevData();
-  const store = MockDataStore.getInstance();
-  const assets = store.getAssets();
+  osintService.fetchCisaKevData().catch(console.error);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <h1 className="text-3xl font-bold">CVE Remediation PoC</h1>
-        <div className="mt-8">
-          <p>Mock Data Initialization Complete.</p>
-          <p>Assets Generated: <strong>{assets.length}</strong></p>
+    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100">
+      <header className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
+          <h1 className="text-xl font-bold tracking-tight">CVE Remediation <span className="text-zinc-400 font-normal">PoC</span></h1>
         </div>
+      </header>
+      <main className="flex justify-center">
+        <Dashboard />
       </main>
     </div>
   );
