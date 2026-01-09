@@ -60,7 +60,11 @@ describe('RemediationTable', () => {
         expect(screen.getByText('server-db-01')).toBeInTheDocument();
         expect(screen.getByText('CVE-2023-1234')).toBeInTheDocument();
         expect(screen.getByText('9.8')).toBeInTheDocument();
-        expect(screen.getByText(/Exploited/i)).toBeInTheDocument();
+        // Check for specific status badge text, handling potential duplicates with filter label
+        const exploitedBadges = screen.getAllByText((content, element) => {
+            return element?.tagName.toLowerCase() === 'span' && content.includes('Exploited') && !element.closest('label');
+        });
+        expect(exploitedBadges.length).toBeGreaterThan(0);
     });
 
     it('calls onViewDetails when button clicked', () => {
@@ -68,5 +72,53 @@ describe('RemediationTable', () => {
         render(<RemediationTable items={[mockItem]} apiLoading={false} onViewDetails={mockViewDetails} />);
         fireEvent.click(screen.getByText('Details'));
         expect(mockViewDetails).toHaveBeenCalledWith(mockItem);
+    });
+
+    it('filters items by search text', () => {
+        const items = [
+            { ...mockItem, hostname: 'alpha-server', cve_id: 'CVE-1' },
+            { ...mockItem, hostname: 'beta-server', cve_id: 'CVE-2' }
+        ];
+        render(<RemediationTable items={items} apiLoading={false} onViewDetails={() => { }} />);
+
+        const searchInput = screen.getByPlaceholderText(/Search Hostname/i);
+        fireEvent.change(searchInput, { target: { value: 'alpha' } });
+
+        expect(screen.getByText('alpha-server')).toBeInTheDocument();
+        expect(screen.queryByText('beta-server')).not.toBeInTheDocument();
+    });
+
+    it('filters items by exploited status', () => {
+        const items = [
+            { ...mockItem, cve_id: 'CVE-SAFE', risk_score: 10, threat_info: { ...mockItem.threat_info, is_exploited_in_wild: false } },
+            { ...mockItem, cve_id: 'CVE-CRIT', risk_score: 90, threat_info: { ...mockItem.threat_info, is_exploited_in_wild: true } }
+        ];
+        render(<RemediationTable items={items} apiLoading={false} onViewDetails={() => { }} />);
+
+        const checkbox = screen.getByLabelText(/Show Exploited Only/i);
+        fireEvent.click(checkbox);
+
+        expect(screen.getByText('CVE-CRIT')).toBeInTheDocument();
+        expect(screen.queryByText('CVE-SAFE')).not.toBeInTheDocument();
+    });
+
+    it('sorts items by risk score', () => {
+        const items = [
+            { ...mockItem, cve_id: 'CVE-LOW', risk_score: 10 },
+            { ...mockItem, cve_id: 'CVE-HIGH', risk_score: 90 }
+        ];
+        render(<RemediationTable items={items} apiLoading={false} onViewDetails={() => { }} />);
+
+        // Initial sort should be desc (default)
+        const rows = screen.getAllByRole('row');
+        // Index 1 because 0 is header
+        expect(rows[1]).toHaveTextContent('CVE-HIGH');
+        expect(rows[2]).toHaveTextContent('CVE-LOW');
+
+        // Click to sort asc
+        fireEvent.click(screen.getByText(/Risk Score/i));
+        const rowsAsc = screen.getAllByRole('row');
+        expect(rowsAsc[1]).toHaveTextContent('CVE-LOW');
+        expect(rowsAsc[2]).toHaveTextContent('CVE-HIGH');
     });
 });

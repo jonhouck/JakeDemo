@@ -1,5 +1,6 @@
 import { MockDataStore } from './MockDataStore';
 import { ThreatInfo } from '../types/models';
+import { REMEDIATION_CATALOG } from '../data/remediation_catalog';
 
 export class OsintService {
     private store: MockDataStore;
@@ -37,11 +38,14 @@ export class OsintService {
                 // We update the cache. 
                 // Note: CISA data is primarily about "is_exploited_in_wild" being TRUE.
                 // We also get some description and remediation (requiredAction).
+                // Check for Enhanced Remediation
+                const enhancedRemediation = REMEDIATION_CATALOG[cveId];
+
                 this.store.updateThreatCache({
                     cve_id: cveId,
                     is_exploited_in_wild: true,
                     description: vul.shortDescription,
-                    remediation_steps: vul.requiredAction,
+                    remediation_steps: enhancedRemediation || vul.requiredAction,
                     // Synthetic CVSS for PoC since CISA doesn't provide it. 
                     // If it's in KEV, it's likely High/Critical.
                     cvss_score: 7.0 + (Math.random() * 3.0),
