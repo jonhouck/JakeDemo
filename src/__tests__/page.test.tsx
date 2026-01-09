@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import Home from '@/app/page';
 
 describe('Home', () => {
-    it('renders a heading', () => {
+    it('renders stats', () => {
         render(<Home />);
-        const heading = screen.getByRole('heading', { level: 1 });
-        expect(heading).toBeInTheDocument();
+        expect(screen.getByText('CVE Remediation PoC')).toBeInTheDocument();
+        expect(screen.getByText('Mock Data Initialization Complete.')).toBeInTheDocument();
     });
 });

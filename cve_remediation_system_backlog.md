@@ -82,7 +82,7 @@ graph TD
 - **Outcome**: A running local web server.
 - **Dependencies**: None.
 
-#### Task 1.2: In-Memory Data Structures 🔗
+#### Task 1.2: In-Memory Data Structures 🔗 [DONE]
 - **Description**: Define TypeScript interfaces for `Asset`, `ScanResult`, and `ThreatInfo`. Create a singleton "Service" or Context to hold this data in memory for the session.
 - **Outcome**: A typed structure ready to receive data.
 - **Dependencies**: Task 1.1.
