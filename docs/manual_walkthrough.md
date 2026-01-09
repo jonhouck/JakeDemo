@@ -35,6 +35,7 @@ This document outlines the steps to manually verify the initialization of the Ja
     npm run test
     ```
 3.  **Check**: Pass result for `src/__tests__/page.test.tsx` (renders a heading).
+4.  **Check**: Pass result for `src/services/__tests__/MockDataStore.test.ts` (Data Store Logic).
 
 ### 4. Verify E2E Tests
 1.  Ensure dev server is running (or let Playwright start it - but running it explicitly is fine too).
