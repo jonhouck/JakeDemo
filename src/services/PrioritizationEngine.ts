@@ -7,8 +7,6 @@ export class PrioritizationEngine {
 
     constructor() {
         this.store = MockDataStore.getInstance();
-        // Ensure data exists (fixes server-side initialization race conditions)
-        MockDataGenerator.initializeData();
     }
 
     /**

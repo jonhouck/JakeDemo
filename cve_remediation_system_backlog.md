@@ -131,7 +131,7 @@ graph TD
 - **Outcome**: Interactive React UI.
 - **Dependencies**: Task 3.2.
 
-#### Task 4.2: Report Export
+#### Task 4.2: Report Export [DONE]
 - **Description**: Add a "Export Report" button.
     - Generates a clean JSON or Markdown view of the prioritized list for the user to "download" or view.
 - **Outcome**: The specific business outcome requested.
