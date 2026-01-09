@@ -87,7 +87,7 @@ graph TD
 - **Outcome**: A typed structure ready to receive data.
 - **Dependencies**: Task 1.1.
 
-#### Task 1.3: Mock Data Generator (Runtime) 🛑
+#### Task 1.3: Mock Data Generator (Runtime) 🛑 [DONE]
 - **Description**: create a utility function `generateMockData()` that runs when the app starts (or is triggered).
     - Generate 500+ assets with realistic names/IPs.
     - Generate random scan results linked to these assets.
@@ -97,7 +97,7 @@ graph TD
 
 ### Phase 2: OSINT Integration (No Auth)
 
-#### Task 2.1: OSINT Service Connector 🛑
+#### Task 2.1: OSINT Service Connector 🛑 [DONE]
 - **Description**: Implement a service to fetch real CVE data without API keys.
     - **Source 1**: **CISA KEV (Known Exploited Vulnerabilities)**. Download the JSON catalog (public URL) and cache it in memory.
     - **Source 2**: **OSV.dev API** or **CIRCL CVE Search**. Use these for specific CVE details (CVSS scores, descriptions) if not found in CISA.

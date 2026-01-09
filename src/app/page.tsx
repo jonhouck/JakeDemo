@@ -1,9 +1,16 @@
 import { MockDataGenerator } from "@/services/MockDataGenerator";
 import { MockDataStore } from "@/services/MockDataStore";
+import { OsintService } from "@/services/OsintService";
 
 export default function Home() {
   // Initialize mock data (idempotent)
   MockDataGenerator.initializeData();
+
+  // Trigger OSINT fetch (fire and forget, or await if we want to ensure data is there before rendering)
+  // For this PoC, we'll just trigger it.
+  const osintService = new OsintService();
+  // We accept the promise floating for now as it's a background fetch in this PoC context
+  osintService.fetchCisaKevData();
   const store = MockDataStore.getInstance();
   const assets = store.getAssets();
 
